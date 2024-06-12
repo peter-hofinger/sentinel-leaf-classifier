@@ -1,4 +1,4 @@
-Leaf Type Mixture
+Predicting Leaf Type Mixture Using Tailored Sentinel-2 Composites
 ==============================
 
 > Disclaimer: This repository is a work in progress and the corresponding paper has not been published yet. The code is subject to change.
