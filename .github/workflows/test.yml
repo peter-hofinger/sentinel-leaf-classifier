@@ -10,7 +10,7 @@ jobs:
   lint:
     name: Linters
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 5
 
     steps:
       - name: Checkout Code
@@ -35,7 +35,7 @@ jobs:
   unittest:
     name: Unit Tests
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 5
 
     steps:
       - name: Checkout Code
