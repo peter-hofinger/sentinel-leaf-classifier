@@ -2,8 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 import rasterio
-
-from ltm.features import (
+from slc.features import (
     interpolate_data,
     load_raster,
     np2pd_like,
@@ -14,7 +13,7 @@ from ltm.features import (
 
 @pytest.fixture(name="data_path")
 def fixture_data_path(tmp_path):
-    data = np.random.rand(2, 10, 20)
+    data = np.random.default_rng().random((2, 10, 20))
     data_file = tmp_path / "data.tif"
     with rasterio.open(
         data_file,
@@ -32,7 +31,7 @@ def fixture_data_path(tmp_path):
 
 @pytest.fixture(name="target_path")
 def fixture_target_path(tmp_path):
-    target = np.random.rand(10, 20)
+    target = np.random.default_rng().random((10, 20)).round()
     target[0, 0] = np.nan
     target_file = tmp_path / "target.tif"
     with rasterio.open(
@@ -50,7 +49,7 @@ def fixture_target_path(tmp_path):
 
 
 def test_np2pd_like():
-    df = pd.DataFrame(
+    dummy = pd.DataFrame(
         {
             "B1": [0],
             "B2": [0],
@@ -59,7 +58,7 @@ def test_np2pd_like():
     )
 
     data = np.zeros((20, 3))
-    data_pd = np2pd_like(data, df)
+    data_pd = np2pd_like(data, dummy)
     assert isinstance(data_pd, pd.DataFrame)
     assert data_pd.shape == (20, 3)
     assert data_pd.columns[0] == "B1"
@@ -128,7 +127,9 @@ def test_to_float32():
             "1 B3 mean": [0],
         }
     )
-    with pytest.raises(ValueError):
+    with pytest.raises(
+        ValueError, match="Expected numeric data, found object instead."
+    ):
         to_float32(data)
 
     data["1 B2 mean"] = [1]

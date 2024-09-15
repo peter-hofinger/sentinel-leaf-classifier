@@ -1,8 +1,7 @@
 import numpy as np
 import pytest
 import rasterio
-
-from ltm.data import combine_band_name, download_dlt_2018, split_band_name
+from slc.data import combine_band_name, download_dlt_2018, split_band_name
 
 
 @pytest.fixture(name="reference_path")
@@ -51,7 +50,9 @@ def test_download_dlt_2018(tmp_path, reference_path):
     assert destination_path.exists()
     with rasterio.open(destination_path) as src:
         data = src.read()
-        assert np.any(data == 0) and np.any(data == 1) and np.any(data)
+        assert np.any(data == 0)
+        assert np.any(data == 1)
+        assert np.any(data)
         assert np.unique(data).shape == (3,)
 
         # Check if the metadata is correct
